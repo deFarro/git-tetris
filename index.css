@@ -1,0 +1,30 @@
+table, td {
+  border: 1px solid black;
+  text-align: center;
+  cursor: default;
+  margin: 0;
+  padding: 0;
+}
+table {
+  width: 200px;
+  height: 400px;
+  border-collapse: collapse;
+  margin: auto;
+}
+.hidden {
+  display: none;
+}
+p {
+  text-align: center;
+  font-family: sans-serif;
+}
+#start {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 200%;
+}
+#keyboard {
+  height: 50px;
+  font-family: sans-serif;
+  font-weight: 900;
+}

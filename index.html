@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>tetris</title>
+    <link href="index.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <p id = "result"></p>
+    <p id = "controls">Controls: <br>
+    &#8594; - move right<br>
+    &#8592; - move left<br>
+    &#8593; - turn the figure<br>
+    &#8595; - speed up<br></p>
+    <p id = "start">Start</p>
+    <p id = "scoreLine" class = "hidden">Score: <span id = "score">0</span> Speed: <span id = "speed">1</span></p>
+    <table>
+      <tbody id = "field" class = "hidden">
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+        <tr><td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td></tr>
+      </tbody>
+    </table>
+    <br>
+    <table id = "keyboard">
+      <tr><td id = "leftkey">&lt;&lt;&lt;</td><td id = "rightkey">&gt;&gt;&gt;</td></tr>
+      <tr><td id = "speedkey">DROP</td><td id = "turnkey">TURN</td></tr>
+    </table>
+    <script src="index.js"></script>
+  </body>
+</html>
