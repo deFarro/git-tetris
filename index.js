@@ -1,6 +1,6 @@
 var background = window.getComputedStyle(document.body).backgroundColor;
 var filling = 'black';
-var core, pattern, interval, indexOfPat, direction = 0; active = [], score, speed;
+var core, pattern, interval, indexOfPat, direction = 0; active = [], score, speed, mobile = false;
 
 // В массиве хранятся паттерны для отрисовки фигур в разных положениях
 var figures = [
@@ -17,13 +17,16 @@ var scoreBoard = document.querySelector('#score');
 var speedBoard = document.querySelector('#speed');
 var field = document.querySelector('#field');
 var result = document.querySelector('#result');
+var manual = document.querySelector('#controls');
 
 startButton.addEventListener('click', startGame);
 document.addEventListener('keydown', moveCore);
 
 // Если приложение открыто на мобильном устройстве, отображаем кнопки управления
-if (screen.width > 1000) {
-  document.querySelector('#keyboard').classList.add('hidden');
+if (screen.width < 1000) {
+  mobile = true;
+  manual.classList.add('hidden');
+  document.querySelector('#keyboard').classList.remove('hidden');
 }
 document.querySelector('#leftkey').addEventListener('click', moveLeft);
 document.querySelector('#rightkey').addEventListener('click', moveRight);
@@ -36,13 +39,12 @@ function rand(x) {
 
 // Функция для начала игры - скрываем подсказку, обнуляем счёт
 function startGame() {
-  document.querySelector('#controls').classList.add('hidden');
+  manual.classList.add('hidden');
   startButton.classList.toggle('hidden');
   result.classList.toggle('hidden');
   field.classList.toggle('hidden');
   score = 0;
   speed = 1;
-  interval = 1000;
   scoreBoard.innerHTML = score;
   speedBoard.innerHTML = speed;
   scoreLine.classList.toggle('hidden');
@@ -64,6 +66,7 @@ function gameOver() {
 
 // Функция для генерации случайной фигуры, и определения точки старта для неё
 function generateFigure() {
+  interval = 1100 - speed * 100;
   indexOfPat = rand(6);
   if (indexOfPat >= 5) {
     core = 5;
@@ -166,14 +169,14 @@ function deleteRow(index) {
   let newRows = document.createElement('tr');
   newRows.innerHTML = '<td class = "left"></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class = "right"></td>';
   field.insertBefore(newRows, field.firstChild);
-  cells = Array.from(document.querySelectorAll('td'));
+  cells = Array.from(document.querySelectorAll('#field td'));
 }
 
 // Функция для обновления счёта и скорости игры (максимальная скорость - 10, 0.1сек на 1 шаг)
 function updateScore() {
   score += 100;
   scoreBoard.innerHTML = score;
-  if (score % 500 === 0 && interval > 100) {
+  if (score % 500 === 0 && (1100 - speed * 100) > 100) {
     interval -= 100;
     speed++;
     speedBoard.innerHTML = speed;
@@ -274,6 +277,15 @@ function moveRight() {
 // Функция для ускорения падения фигуры
 function speedUp(ev) {
   ev.preventDefault();
+  // На мобильный ускорять падение вручную нельзя - только ронять
+  if (mobile) {
+    interval = 25;
+    return;
+  }
+  if (ev.shiftKey) {
+    interval = 25;
+    return;
+  }
   for (let cell of active) {
     if (!cells[cells.indexOf(cell) + 10]) {
       return;
