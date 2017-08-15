@@ -1,13 +1,13 @@
 var background = window.getComputedStyle(document.body).backgroundColor;
 var filling = 'black';
-var core, pattern, interval, indexOfPat, direction = 0; active = [], score, speed, mobile = false;
+var core, pattern, interval, indexOfPat, direction = 0, active = [], score, speed, mobile = false;
 
-// В массиве хранятся паттерны для отрисовки фигур в разных положениях
+// Array with patterns for drawing figures in all positions
 var figures = [
-[[-10, -9, 1], [-10, 10, 20], [-10, -1, 1], [-1, 10, 11], [-9, -1, 1], [1, 9, 10], [-11, -1, 1]],
-[[-10, -9, 1], [-1, 1, 2], [-10, 1, 10], [-10, -1, 9], [-10, 10, 11], [-11, -1, 10], [-10, -9, 10]],
-[[-10, -9, 1], [-10, 10, 20], [-1, 1, 10], [-11, -10, 1], [-1, 1, 9], [-10, -9, -1], [-1, 1, 11]],
-[[-10, -9, 1], [-1, 1, 2], [-10, -1, 10], [-9, 1, 10], [-11, -10, 10], [-10,  1,  11], [-10, 9, 10]]
+  [[-10, -9, 1], [-10, 10, 20], [-10, -1, 1], [-1, 10, 11], [-9, -1, 1], [1, 9, 10], [-11, -1, 1]],
+  [[-10, -9, 1], [-1, 1, 2], [-10, 1, 10], [-10, -1, 9], [-10, 10, 11], [-11, -1, 10], [-10, -9, 10]],
+  [[-10, -9, 1], [-10, 10, 20], [-1, 1, 10], [-11, -10, 1], [-1, 1, 9], [-10, -9, -1], [-1, 1, 11]],
+  [[-10, -9, 1], [-1, 1, 2], [-10, -1, 10], [-9, 1, 10], [-11, -10, 10], [-10,  1,  11], [-10, 9, 10]]
 ];
 
 var cells = Array.from(document.querySelectorAll('#field td'));
@@ -22,7 +22,7 @@ var manual = document.querySelector('#controls');
 startButton.addEventListener('click', startGame);
 document.addEventListener('keydown', moveCore);
 
-// Если приложение открыто на мобильном устройстве, отображаем кнопки управления
+// If app is opened on mobile device control buttons are being displayed
 if (screen.width < 1000) {
   mobile = true;
   manual.classList.add('hidden');
@@ -37,7 +37,7 @@ function rand(x) {
   return Math.round(Math.random() * x);
 }
 
-// Функция для начала игры - скрываем подсказку, обнуляем счёт
+// Start game function. Nullifies score, hides controls manual
 function startGame() {
   manual.classList.add('hidden');
   startButton.classList.toggle('hidden');
@@ -51,7 +51,7 @@ function startGame() {
   generateFigure();
 }
 
-// Функция завершения игры - прячем поле, выводим счёт
+// Finish game function. Hides game field, displays score
 function gameOver() {
   scoreLine.classList.toggle('hidden');
   field.classList.toggle('hidden');
@@ -64,7 +64,7 @@ function gameOver() {
   startButton.classList.toggle('hidden');
 }
 
-// Функция для генерации случайной фигуры, и определения точки старта для неё
+// Function to generate random figure and calculating start point
 function generateFigure() {
   interval = 1100 - speed * 100;
   indexOfPat = rand(6);
@@ -78,7 +78,7 @@ function generateFigure() {
   dropFigure(pattern);
 }
 
-// Функция для отрисовки фигуры. Принимает точку ядра, вокруг которого отрисовывает фигуру по заданному паттерну. Помечает клетки, которые занимает фигура как активные
+// Function to draw a figure. Getting starting point to draw a figure from it using proper pattern. Marks as active the cells occupied by a figure
 function displayFigure(index) {
   cells[index].style.backgroundColor = filling;
   cells[index].classList.add('active');
@@ -89,7 +89,7 @@ function displayFigure(index) {
   active = Array.from(document.querySelectorAll('.active'));
 }
 
-// Функция для удаления фигуры с поля
+// Function to delete a figure from the field
 function clearFigure(index) {
   cells[index].style.backgroundColor = background;
   cells[index].classList.remove('active');
@@ -99,18 +99,18 @@ function clearFigure(index) {
   }
 }
 
-// Функция движения фигуры вниз
+// Function to drop a figure constantly
 function dropFigure(pattern) {
-  // Проверяем, есть ли под фигурой заполненные клетки или конец поля
+  // Check if the are filled cells under the figure or the bottom of the field is reached
   if (checkSpace()) {
-    // Если заполненные клетки есть, а при этом фигура находится на точке старта, заканчиваем игру, выводим счёт
+    // If there is a filled cell and the figure is on the start position, the game is over
     if (core < 30) {
       core = null;
       pattern = null;
       gameOver();
       return;
     }
-    // Если есть касание с заполненными клетками, убираем отметку с активных клеток, запускаем проверку на составленную линию и генерируем следующую фигуру
+    // If the figure touches a filled cell, function nullifies all active marks, checks is there are any lines completed and generates next figure
     displayFigure(core);
     core = null;
     cells.forEach(cell => {cell.classList.remove('active')});
@@ -119,14 +119,14 @@ function dropFigure(pattern) {
     generateFigure();
     return;
   }
-  // Если под фигурой всё свободно, то сдвигаем ядро и отрисовываем её, и удаляем через заданный промежуток времени (в зависимости от скорости). После чего запускаем функцию снова
+  // If there is free space under a figure, the core being moved and the figure is being redrawn after pause depending on current speed level. Then function calls itself
   core += 10;
   displayFigure(core);
   let step = new Promise((done, fail) => {
     setTimeout(() => {
-    clearFigure(core);
-    done(pattern);
-  }, interval);
+      clearFigure(core);
+      done(pattern);
+    }, interval);
   });
   step.then((pattern) => {
     dropFigure(pattern);
@@ -134,7 +134,7 @@ function dropFigure(pattern) {
   return;
 }
 
-// Функция для проверки места под активной фигурой
+// Function to check space under the active figure
 function checkSpace() {
   if (active) {
     for (let cell of active) {
@@ -150,7 +150,7 @@ function checkSpace() {
   return false;
 }
 
-// Функция для проверки составленных рядов
+// Function to check completed lines
 function checkLines() {
   for (let i = 0; i < cells.length; i += 10) {
     let lineReady = cells.slice(i, i + 10)
@@ -163,7 +163,7 @@ function checkLines() {
   }
 }
 
-// Функция для удаления из DOM заполненных рядов, и генерации новых пустых на их месте
+// Function to remove completed lines from DOM and generating new ones on the top
 function deleteRow(index) {
   cells[index].parentNode.remove();
   let newRows = document.createElement('tr');
@@ -172,7 +172,7 @@ function deleteRow(index) {
   cells = Array.from(document.querySelectorAll('#field td'));
 }
 
-// Функция для обновления счёта и скорости игры (максимальная скорость - 10, 0.1сек на 1 шаг)
+// Function to update game score and speed (maximum speed level is 10 - 0,1 sec per tick
 function updateScore() {
   score += 100;
   scoreBoard.innerHTML = score;
@@ -183,25 +183,25 @@ function updateScore() {
   }
 }
 
-// Фунция для управления фигурами с клавиатуры
+// Function to track keyboard controls
 function moveCore(ev) {
   switch(ev.keyCode) {
-  case 37:
+    case 37:
     moveLeft();
     break;
-  case 39:
+    case 39:
     moveRight();
     break;
-  case 38:
+    case 38:
     turnFigure(ev);
     break;
-  case 40:
+    case 40:
     speedUp(ev);
     break;
   }
 }
 
-// Функция для вращения фигуры - переход к следующему паттерну в массиве
+// Function to rotate a figure (switching to the next pattern)
 function turnFigure(ev) {
   ev.preventDefault();
   if ((direction + 1) < 4) {
@@ -214,7 +214,7 @@ function turnFigure(ev) {
     displayFigure(core);
   }
   else {
-    // Когда прокрутили 3 раза, возвращаемся к первому паттерну положения
+    // When a figure is rotated 3 times, it goes back to the first pattern
     if (checkTurn(-3)) {
       return;
     }
@@ -225,7 +225,7 @@ function turnFigure(ev) {
   }
 }
 
-// Функция для проверки возможности вращения фигуры - нет ли краёв поля или закрашенных клеток
+// Function to check if rotating is possible (no field borders or filled cells on the way)
 function checkTurn(step) {
   let pattern = figures[direction + step][indexOfPat];
   for (let dot of pattern) {
@@ -244,7 +244,7 @@ function checkTurn(step) {
   }
 }
 
-// Функция для сдвига фигуры влево
+// Function to move a figure left
 function moveLeft() {
   for (let cell of active) {
     if (cell.classList.contains('left')) {
@@ -259,7 +259,7 @@ function moveLeft() {
   displayFigure(core);
 }
 
-// Функция для сдвига фигуры вправо
+// Function to move a figure right
 function moveRight() {
   for (let cell of active) {
     if (cell.classList.contains('right')) {
@@ -274,10 +274,10 @@ function moveRight() {
   displayFigure(core);
 }
 
-// Функция для ускорения падения фигуры
+// Function to speed up figure falling
 function speedUp(ev) {
   ev.preventDefault();
-  // На мобильный ускорять падение вручную нельзя - только ронять
+  // On a mobile device player can only drop a figure, not to speed up
   if (mobile) {
     interval = 25;
     return;
