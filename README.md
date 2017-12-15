@@ -3,6 +3,8 @@
 Classic tetris game. Complete lines, earn points.
 After each 500 points speed goes up.
 
+Hosted currently on: http://tetris2017.host22.com/
+
 ---
 
 ### Tech stack:
